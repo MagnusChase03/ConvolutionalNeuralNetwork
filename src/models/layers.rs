@@ -40,13 +40,22 @@ impl Layer for PoolingLayer {
 
                     for kx in 0..self.kernel_size.0 {
 
-                        if oy + ky < self.padding.1 || ox + kx < self.padding.0 && 0.0 > max {
+                        let y: usize = (self.stride.1 * oy) + ky;
+                        let x: usize = (self.stride.0 * ox) + kx;
 
-                            max = 0.0;
+                        if y < self.padding.1 || x < self.padding.0
+                            || y - self.padding.1 >= input.len() 
+                            || x - self.padding.0 >= input[0].len() {
+
+                            if 0.0 > max {
+
+                                max = 0.0;
+
+                            }
 
                         } else {
 
-                            let value: f64 = input[(self.stride.1 * oy) - self.padding.1 + ky][(self.stride.0 * ox) - self.padding.0 + kx];
+                            let value: f64 = input[y - self.padding.1][x - self.padding.0];
                             if value > max {
 
                                 max = value;
@@ -54,8 +63,9 @@ impl Layer for PoolingLayer {
                             }
 
                         }
-
+                        
                     }
+
 
                 }
 
