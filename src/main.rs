@@ -1,22 +1,17 @@
 mod models;
 mod utils;
 
-use models::{layers::Layer, layers};
+use models::layers::Layer;
+use models::neural_network::*;
 
 fn main() {
     
-    // let mut pooling_layer = layers::PoolingLayer::new((2, 2), (2, 2), (1, 1));
 
+    let nn = NeuralNetwork::default();
     let inputs = vec![vec![1.0, 2.0, 3.0, 4.0]; 4];
-    // let output = pooling_layer.forward(&inputs);
-    // println!("{:?}", output);
 
-    let mut convolution_layer = layers::ConvolutionLayer::new((2, 2), (1, 1), (0, 0));
-
-    // println!("{:?}", convolution_layer.weights);
-
-    let output = convolution_layer.forward(&inputs);
-
-    println!("{:?}", output);
+    let outputs = nn.forward(&inputs);
+    println!("{:?}", outputs);
+    
 
 }

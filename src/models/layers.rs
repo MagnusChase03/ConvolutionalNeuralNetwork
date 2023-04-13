@@ -4,7 +4,7 @@ use crate::utils::activation;
 
 pub trait Layer {
 
-    fn forward(&mut self, input: &Vec<Vec<f64>>) -> Vec<Vec<f64>>;
+    fn forward(&self, input: &Vec<Vec<f64>>) -> Vec<Vec<f64>>;
 
 }
 
@@ -28,7 +28,7 @@ impl PoolingLayer {
 
 impl Layer for PoolingLayer {
 
-    fn forward(&mut self, input: &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
+    fn forward(&self, input: &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
 
         let output_width: usize = ((input[0].len() + (2 * self.padding.0) - self.kernel_size.0) / self.stride.0) + 1;
         let output_height: usize = ((input.len() + (2 * self.padding.1) - self.kernel_size.1) / self.stride.1) + 1;
@@ -107,7 +107,7 @@ impl ConvolutionLayer {
 
 impl Layer for ConvolutionLayer {
 
-    fn forward(&mut self, input: &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
+    fn forward(&self, input: &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
 
         let output_width: usize = ((input[0].len() + (2 * self.padding.0) - self.kernel_size.0) / self.stride.0) + 1;
         let output_height: usize = ((input.len() + (2 * self.padding.1) - self.kernel_size.1) / self.stride.1) + 1;
