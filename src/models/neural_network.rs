@@ -17,7 +17,8 @@ impl NeuralNetwork {
     pub fn default() -> Self {
 
         let layers: Vec<Box<dyn Layer>> = vec![Box::new(ConvolutionLayer::new((3, 3), (1, 1), (0, 0))),
-            Box::new(PoolingLayer::new((2, 2), (2, 2), (0, 0)))];
+            Box::new(PoolingLayer::new((2, 2), (2, 2), (0, 0))),
+            Box::new(DenseLayer::new((1, 2)))];
 
         NeuralNetwork::new(layers)
 

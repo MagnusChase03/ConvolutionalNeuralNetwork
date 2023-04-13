@@ -1,6 +1,6 @@
 use rand::prelude::*;
 
-use crate::utils::activation;
+use crate::utils::activation::*;
 
 pub trait Layer {
 
@@ -99,7 +99,19 @@ impl ConvolutionLayer {
     pub fn new(kernel_size: (usize, usize), stride: (usize, usize), padding: (usize, usize)) -> Self {
 
         let mut rng = rand::thread_rng();
-        ConvolutionLayer {kernel_size, weights: vec![vec![rng.gen(); kernel_size.0]; kernel_size.1], stride, padding}
+
+        let mut weights = vec![vec![0.0; kernel_size.0]; kernel_size.1];
+        for y in 0..kernel_size.1 {
+
+            for x in 0..kernel_size.0 {
+
+                weights[y][x] = rng.gen();
+
+            }
+
+        }
+
+        ConvolutionLayer {kernel_size, weights, stride, padding}
 
     }
 
@@ -142,9 +154,64 @@ impl Layer for ConvolutionLayer {
 
                 }
 
-                output[oy][ox] = activation::sigmoid(sum / (self.kernel_size.0 * self.kernel_size.1) as f64);
+                output[oy][ox] = sigmoid(sum / (self.kernel_size.0 * self.kernel_size.1) as f64);
 
             }
+
+        }
+
+        output
+
+    }
+
+}
+
+pub struct DenseLayer {
+
+    pub size: (usize, usize),
+    pub weights: Vec<Vec<f64>>
+
+}
+
+impl DenseLayer {
+
+    pub fn new(size: (usize, usize)) -> Self {
+
+        let mut rng = rand::thread_rng();
+
+        let mut weights = vec![vec![0.0; size.1]; size.0];
+        for y in 0..size.0 {
+
+            for x in 0..size.1 {
+
+                weights[y][x] = rng.gen();
+
+            }
+
+        }
+
+        DenseLayer {size, weights}
+
+    }
+
+}
+
+impl Layer for DenseLayer {
+
+    fn forward(&self, input: &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
+
+
+        let mut output = vec![vec![0.0; self.size.1]];
+
+        for o in 0..self.size.1 {
+
+            for i in 0..input[0].len() {
+
+                output[0][o] += self.weights[i][o] * input[0][i];
+
+            }
+
+            output[0][o] = sigmoid(output[0][o]);
 
         }
 
