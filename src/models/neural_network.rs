@@ -25,15 +25,14 @@ impl NeuralNetwork {
 
     pub fn forward(&self, input: &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
 
-        let mut i = input.clone();
+        let mut output = input.clone();
         for l in 0..self.layers.len() {
 
-            let output = self.layers[l].forward(&i);
-            i = output;
+            output = self.layers[l].forward(&output);
 
         }
 
-        i
+        output
 
     }
 

@@ -1,7 +1,6 @@
 mod models;
 mod utils;
 
-use models::layers::Layer;
 use models::neural_network::*;
 
 fn main() {
