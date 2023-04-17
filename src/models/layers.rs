@@ -194,6 +194,25 @@ impl DenseLayer {
 
     }
 
+    // Move to layer
+    pub fn backward(&mut self, input: &Vec<Vec<f64>>, error: &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
+
+        let mut next_error = vec![vec![0.0; self.size.1]; self.size.0];
+        for i in 0..self.size.0 {
+
+            for j in 0..self.size.1 {
+
+                next_error[i][j] += error[0][j] * self.weights[i][j];
+                self.weights[i][j] += error[0][j] * input[0][i];
+
+            }
+
+        }
+
+        next_error
+
+    }
+
 }
 
 impl Layer for DenseLayer {
